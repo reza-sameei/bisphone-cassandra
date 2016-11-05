@@ -7,8 +7,8 @@ import scala.collection.mutable
   */
 class MinimalResultSet(val origin: ResultSet) {
 
-   def single[T](fn: MinimalRow => T): Option[T] =
-      Option(origin.one()) map { row => fn(new MinimalRow(row)) }
+   def single[T](fn: MinimalRow => Option[T]): Option[T] =
+      Option(origin.one()) flatMap { row => fn(new MinimalRow(row)) }
 
    def list[T](fn: MinimalRow => Option[T]): List[T] = {
       val iter = origin.iterator()
