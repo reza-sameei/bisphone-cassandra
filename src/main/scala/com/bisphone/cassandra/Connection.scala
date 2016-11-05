@@ -95,6 +95,8 @@ class Connection(
 
    def bound(stmt: core.PreparedStatement) = new core.BoundStatement(stmt)
 
+   def minimalBound(stmt: core.PreparedStatement) = new MinimalBoundStmt(new core.BoundStatement(stmt))
+
    private class CassandraResultSetListener(
       self   : core.ResultSetFuture,
       promise: Promise[core.ResultSet],
