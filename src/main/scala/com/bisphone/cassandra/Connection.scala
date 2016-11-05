@@ -26,8 +26,6 @@ object ConsistencyLevel {
 
    case object One extends ConsistencyLevel("one".toLowerCase, core.ConsistencyLevel.LOCAL_ONE)
 
-   core.ConsistencyLevel
-
    val values = Quorum :: One :: Nil
 
    def get(name: String): Option[ConsistencyLevel] = {
@@ -94,6 +92,8 @@ class Connection(
    }
 
    def isEverythingOk: Boolean = !(cluster.isClosed || session.isClosed)
+
+   def bound(stmt: core.PreparedStatement) = new core.BoundStatement(stmt)
 
    private class CassandraResultSetListener(
       self   : core.ResultSetFuture,
