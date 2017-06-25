@@ -16,16 +16,51 @@ package object cassandra {
       writerConsistencyLevel: ConsistencyLevel
    )
 
-   sealed class ConsistencyLevel private[ConsistencyLevel](
-      val name : String,
+//   sealed case class ConsistencyLevel private[ConsistencyLevel](
+//      val name : String,
+//      val value: core.ConsistencyLevel
+//   )
+
+//   object ConsistencyLevel {
+//
+//      case object Quorum extends ConsistencyLevel("quorum".toLowerCase, core.ConsistencyLevel.LOCAL_QUORUM)
+//
+////      case object One extends ConsistencyLevel("one".toLowerCase, core.ConsistencyLevel.LOCAL_ONE)
+//
+//      val One = new ConsistencyLevel(
+//         "one".toLowerCase,
+//         core.ConsistencyLevel.LOCAL_ONE
+//      )
+//
+//      val Quorum =
+//
+//      val values = Quorum :: One :: Nil
+//
+//      def get(name: String): Option[ConsistencyLevel] = {
+//         val n = name.toLowerCase()
+//         values.find(_.name == n)
+//      }
+//
+//      def getByCassandraNameConvention(name: String): Option[ConsistencyLevel] = values.find(_.value.name == name)
+//
+//   }
+
+   sealed trait ConsistencyLevel
+   {
+      val name: String
       val value: core.ConsistencyLevel
-   )
+   }
 
    object ConsistencyLevel {
+      case object Quorum extends ConsistencyLevel {
+         val name = "quorum"
+         val value= core.ConsistencyLevel.QUORUM
+      }
 
-      case object Quorum extends ConsistencyLevel("quorum".toLowerCase, core.ConsistencyLevel.LOCAL_QUORUM)
-
-      case object One extends ConsistencyLevel("one".toLowerCase, core.ConsistencyLevel.LOCAL_ONE)
+      case object One extends ConsistencyLevel {
+         val name = "one"
+         val value= core.ConsistencyLevel.ONE
+      }
 
       val values = Quorum :: One :: Nil
 
@@ -35,7 +70,6 @@ package object cassandra {
       }
 
       def getByCassandraNameConvention(name: String): Option[ConsistencyLevel] = values.find(_.value.name == name)
-
    }
 
    type Row = core.Row
