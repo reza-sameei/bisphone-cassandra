@@ -30,22 +30,25 @@ object Util {
       }
     }
 
-  def cassandraConnection[T <: ValueExtractor](extractor: T)(
+  def cassandraConfig[T <: ValueExtractor](extractor: T)(
     implicit ex: ExecutionContextExecutor
-  ): AsyncResult[SimpleError, cassandra.Connection] = {
-
+  ): AsyncResult[SimpleError, cassandra.Config] = {
     for {
       seeds <- extractor.nelist[(String, Int)]("seeds")
       keyspace <- extractor.required[String]("keyspace")
       readCL <- extractor.required[cassandra.ConsistencyLevel]("read-consistency-level")
       writeCL <- extractor.required[cassandra.ConsistencyLevel]("write-consistency-level")
+    } yield Config(seeds, keyspace, readCL, writeCL)
+  }
 
-      conn = new cassandra.Connection(
-        seeds = seeds,
-        keySpace = keyspace,
-        readConsistencyLevel = readCL,
-        writeConsistencyLevel = writeCL
-      )
+  def cassandraConnection[T <: ValueExtractor](extractor: T)(
+    implicit ex: ExecutionContextExecutor
+  ): AsyncResult[SimpleError, cassandra.Connection] = {
+
+    for {
+      config <- cassandraConfig(extractor)
+
+      conn = new cassandra.Connection(config)
 
     } yield conn
   }
