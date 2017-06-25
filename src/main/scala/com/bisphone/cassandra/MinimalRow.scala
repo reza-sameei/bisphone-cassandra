@@ -26,7 +26,7 @@ class MinimalRow(val origin: Row) {
       implicit
       tagK: ClassTag[K],
       tagV: ClassTag[V]
-   ): Map[K,V] = origin.getMap(resultSetParam(i), tagK.runtimeClass, tagV.runtimeClass).asScala.asInstanceOf[Map[K,V]]
+   ): Map[K,V] = origin.getMap(resultSetParam(i), tagK.runtimeClass, tagV.runtimeClass).asScala.toMap.asInstanceOf[Map[K,V]]
 
    @inline def list[T](i: Int)(
       implicit tag: ClassTag[T]
