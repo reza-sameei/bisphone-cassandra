@@ -12,6 +12,10 @@ class MinimalRow(val origin: Row) {
 
    @inline def string(i: Int): String = origin.getString(resultSetParam(i))
 
+   @inline def double(i: Int): Double = origin.getDouble(resultSetParam(i))
+
+   @inline def float(i: Int): Float = origin.getFloat(resultSetParam(i))
+
    @inline def long(i: Int): Long = origin.getLong(resultSetParam(i))
 
    @inline def int(i: Int): Int = origin.getInt(resultSetParam(i))
@@ -41,6 +45,10 @@ class MinimalRow(val origin: Row) {
    @inline def pkToken() = origin.getPartitionKeyToken()
 
    @inline def optionalString(i: Int): Option[String] = if (origin.isNull(resultSetParam(i))) None else Some(string(i))
+
+   @inline def optionalDouble(i: Int): Option[Double] = if (origin.isNull(resultSetParam(i))) None else Some(double(i))
+
+   @inline def optionalFloat(i: Int): Option[Float] = if (origin.isNull(resultSetParam(i))) None else  Some(float(i))
 
    @inline def optionalLong(i: Int): Option[Long] = if (origin.isNull(resultSetParam(i))) None else Some(long(i))
 

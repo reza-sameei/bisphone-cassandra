@@ -14,6 +14,16 @@ class MinimalBoundStmt(val origin: core.BoundStatement) {
       this
    }
 
+   @inline def double(i: Int, value: Double) = {
+      origin.setDouble(queryParam(i), value)
+      this
+   }
+
+   @inline def float(i: Int, value: Float) = {
+      origin.setFloat(queryParam(i), value)
+      this
+   }
+
    @inline def long(i: Int, value: Long) = {
       origin.setLong(queryParam(i), value)
       this
