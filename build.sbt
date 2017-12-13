@@ -4,7 +4,7 @@ organization := "com.bisphone"
 
 name := "cassandra"
 
-version := "1.3.4"
+version := "1.4.0"
 
 scalaVersion := "2.11.8"
 
@@ -22,5 +22,5 @@ javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
 libraryDependencies ++= Seq(
    "com.datastax.cassandra" % "cassandra-driver-core" % "3.0.2",
-   "com.bisphone" %% "std" % "0.10.0"
+   "com.bisphone" %% "std" % "0.11.0"
 )
