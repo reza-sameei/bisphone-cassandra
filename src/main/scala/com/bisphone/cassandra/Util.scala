@@ -34,7 +34,7 @@ object Util {
     implicit ex: ExecutionContextExecutor
   ): AsyncResult[SimpleError, cassandra.Config] = {
     for {
-      seeds <- extractor.nelist[(String, Int)]("seeds")
+      seeds <- extractor.nelist[(String, Int)]("seeds")(tupleOfStringAndInt, ex)
       keyspace <- extractor.required[String]("keyspace")
       readCL <- extractor.required[cassandra.ConsistencyLevel]("read-consistency-level")
       writeCL <- extractor.required[cassandra.ConsistencyLevel]("write-consistency-level")
