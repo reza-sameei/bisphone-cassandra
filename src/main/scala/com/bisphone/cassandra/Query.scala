@@ -4,6 +4,8 @@ import scala.collection.JavaConverters._
 
 trait Query[T] {
 
+    def conn: Connection
+
     def table: String
 
     def selectAll: String
