@@ -23,6 +23,8 @@ class Connection(
       )
    }
 
+   override def toString = s"${getClass.getName}, Seeds: ${seeds}, Keyspace: ${keySpace}, Read: ${readConsistencyLevel}, Write: ${writeConsistencyLevel}, Closed?: ${session.isClosed}"
+
    val cluster = {
 
       val builder = core.Cluster.builder()

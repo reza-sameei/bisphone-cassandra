@@ -52,4 +52,38 @@ object Util {
 
     } yield conn
   }
+
+  class ConfigParser {
+
+    private val regex = {
+      val raw = """(.*):(\d*)"""
+      raw.r
+    }
+
+    private def parseHostAndPort(value: String) = value match {
+      case regex(host,port) => (host, port.toInt)
+      case x => throw new IllegalArgumentException(s"Invalid String for 'host:port': '${x}'")
+    }
+
+    private def parseConsitencyLevel(value: String) =
+      cassandra.ConsistencyLevel.get(value) match {
+        case Some(rsl) => rsl
+        case None =>
+          val msg = s"Invalid value for cassandra-consistencylevel: ${value}. Valid values: ${cassandra.ConsistencyLevel.values.mkString(",")}"
+          throw new IllegalArgumentException(msg)
+      }
+
+    def parse(config: com.typesafe.config.Config) = {
+
+      import scala.collection.JavaConverters._
+
+      val seeds = config.getStringList("seeds").asScala.map(parseHostAndPort).toList
+      val keyspace = config.getString("keyspace")
+      val readCL = parseConsitencyLevel(config.getString("read-consistency-level"))
+      val writeCL = parseConsitencyLevel(config.getString("write-consistency-level"))
+
+      Config(seeds, keyspace, readCL, writeCL)
+    }
+
+  }
 }
